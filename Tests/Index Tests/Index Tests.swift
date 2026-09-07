@@ -1,4 +1,3 @@
-import Index
 import Ordinal
 import Tagged
 import Testing

@@ -12,16 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-
-        .library(
-            name: "Index",
-            targets: ["Index"]
-        ),
-
-        .library(
-            name: "Index Test Support",
-            targets: ["Index Test Support"]
-        ),
+        .library(name: "Index", targets: ["Index"]),
+        .library(name: "Index Standard Library Integration", targets: ["Index Standard Library Integration"]),
+        .library(name: "Index Foundation Library Integration", targets: ["Index Foundation Library Integration"]),
+        .library(name: "Index Test Support", targets: ["Index Test Support"]),
     ],
     dependencies: [
         .package(
@@ -34,14 +28,28 @@ let package = Package(
         ),
     ],
     targets: [
-
         .target(
             name: "Index",
             dependencies: [
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-            ]
+            ],
+            path: "Sources/Index"
+        ),
+        .target(
+            name: "Index Standard Library Integration",
+            dependencies: [
+                .target(name: "Index"),
+            ],
+            path: "Sources/Index Standard Library Integration"
+        ),
+        .target(
+            name: "Index Foundation Library Integration",
+            dependencies: [
+                .target(name: "Index"),
+                .target(name: "Index Standard Library Integration"),
+            ],
+            path: "Sources/Index Foundation Library Integration"
         ),
         .target(
             name: "Index Test Support",
@@ -56,14 +64,18 @@ let package = Package(
                 .target(name: "Index"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-            ]
+                .target(name: "Index Test Support"),
+                .target(name: "Index Standard Library Integration"),
+                .target(name: "Index Foundation Library Integration"),
+            ],
+            path: "Tests/Index Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+for target in package.targets {
+    target.swiftSettings = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
@@ -72,8 +84,4 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
-
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }
