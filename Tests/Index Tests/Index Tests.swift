@@ -8,15 +8,15 @@ private enum Bit {}
 private enum Byte {}
 
 @Suite
-struct `Index Tests` {
-    @Suite struct Unit {}
-    @Suite struct `Edge Case` {}
-    @Suite struct Integration {}
+struct `Indices preserve ordinal positions and their domains` {
+    @Suite struct `Index construction preserves the supplied ordinal position` {}
+    @Suite struct `Indices preserve the largest ordinal position` {}
+    @Suite struct `No additional index integration cases are defined` {}
 }
 
-extension `Index Tests`.Unit {
+extension `Indices preserve ordinal positions and their domains`.`Index construction preserves the supplied ordinal position` {
     @Test
-    func `init with valid position`() {
+    func `Index construction preserves a positive position`() {
         let index: Index::Index<Int> = Tagged::Tagged(
             _unchecked: Ordinal::Ordinal(UInt(5))
         )
@@ -25,7 +25,7 @@ extension `Index Tests`.Unit {
     }
 
     @Test
-    func `init with zero position`() {
+    func `Index construction preserves a zero position`() {
         let index: Index::Index<String> = Tagged::Tagged(
             _unchecked: Ordinal::Ordinal(UInt.zero)
         )
@@ -52,7 +52,7 @@ extension `Index Tests`.Unit {
     }
 
     @Test
-    func `different tag types are incompatible at compile time`() {
+    func `Distinct index domains can preserve the same ordinal position`() {
         let bitIndex: Index::Index<Bit> = Tagged::Tagged(
             _unchecked: Ordinal::Ordinal(UInt(5))
         )
@@ -65,7 +65,7 @@ extension `Index Tests`.Unit {
     }
 }
 
-extension `Index Tests`.`Edge Case` {
+extension `Indices preserve ordinal positions and their domains`.`Indices preserve the largest ordinal position` {
     @Test
     func `maximum ordinal value is preserved`() {
         let index: Index::Index<Int> = Tagged::Tagged(
