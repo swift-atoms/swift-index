@@ -1,2 +1,2 @@
-@_exported public import Index
 import Foundation
+@_exported public import Index
