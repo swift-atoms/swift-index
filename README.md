@@ -1,0 +1,3 @@
+# swift-index
+
+Use this package when you need a position into a particular kind of element, such as a bit index or a byte index, and want the compiler to stop you from mixing positions across domains. Start from `Index<Element>`, which is a `Tagged<Element, Ordinal>`: the element type is only a phantom tag, so it may be `~Copyable` or `~Escapable`, and two indices with different tags never convert into each other implicitly even when they hold the same position. This package adds no operations of its own: everything an index can do comes from `Ordinal` and `Tagged`, which it re-exports. For a position that belongs to no domain, use `Ordinal` from swift-ordinal directly.
